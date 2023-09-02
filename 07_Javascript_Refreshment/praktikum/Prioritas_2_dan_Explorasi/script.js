@@ -59,7 +59,7 @@ function addProduct() {
     newRow.insertCell(4).innerHTML = freshness;
     newRow.insertCell(5).innerHTML = description;
     newRow.insertCell(6).innerHTML = productPrice;
-    newRow.insertCell(7).innerHTML = "<button onclick='removeProduct(this)'>Remove</button>";
+    newRow.insertCell(7).innerHTML = "<button onclick='removeProduct(this)'>Deleted</button>";
 
     // Reset input setelah menambahkan data
     document.getElementById('DataName').value = "";
