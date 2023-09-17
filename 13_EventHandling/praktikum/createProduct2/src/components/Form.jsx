@@ -1,5 +1,6 @@
 import { useState } from "react";
 import article from "./article";
+import Logo from "./assets/logo.png";
 
 function FormTable() {
   const [inputName, setInputName] = useState("");
@@ -132,7 +133,7 @@ function FormTable() {
       <section className="container square-box d-flex " />
       <section className="container-main text-center ">
         <div className="main-content text-center">
-          <img src="logobs.png" alt="logo" />
+          <img src={Logo} alt="logo" />
           <h1>{article.title[language]}</h1>
           <p>{article.description[language]}</p>
           <button
