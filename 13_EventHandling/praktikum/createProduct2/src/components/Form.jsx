@@ -5,16 +5,16 @@ function FormTable() {
   const [inputName, setInputName] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [productFreshness, setProductFreshness] = useState("");
-  //   const [imageOfProduct, setImageOfProduct] = useState("");
   const [additionalDescription, setAdditionalDescription] = useState("");
   const [inputPrice, setInputPrice] = useState("");
   const [nameError, setNameError] = useState("");
   const [categoryError, setCategoryError] = useState("");
   const [freshnessError, setFreshnessError] = useState("");
-  //   const [imageError, setImageError] = useState("");
   const [descError, setDescError] = useState("");
   const [priceError, setPriceError] = useState("");
   const [products, setProducts] = useState([]);
+  const [randomNumber, setRandomNumber] = useState("");
+  const [randomNumberTernary, setRandomNumberTernary] = useState(false);
 
   const handleNameChange = (e) => {
     const value = e.target.value;
@@ -29,6 +29,12 @@ function FormTable() {
     } else {
       setNameError("");
     }
+  };
+
+  const generateRandomNumber = () => {
+    const random = Math.floor(Math.random() * 1000);
+    setRandomNumber(random);
+    console.log("Random Number:", random);
   };
 
   const handleCategoryChange = (e) => {
@@ -46,12 +52,6 @@ function FormTable() {
     setProductFreshness(value);
     setFreshnessError("");
   };
-
-  //   const handleImageChange = (e) => {
-  //     // Anda tidak perlu menyimpan value dari input file dalam state
-  //     // karena file input tidak dapat dikontrol oleh state
-  //     setImageError(""); // Reset error ketika ada perubahan gambar
-  //   };
 
   const handleDescChange = (e) => {
     const value = e.target.value;
@@ -85,7 +85,6 @@ function FormTable() {
       !nameError &&
       !categoryError &&
       !freshnessError &&
-      //   !imageError &&
       !descError &&
       !priceError
     );
@@ -102,7 +101,6 @@ function FormTable() {
       name: inputName,
       category: productCategory,
       freshness: productFreshness,
-      // Anda tidak perlu menyimpan value file input dalam state
       description: additionalDescription,
       price: inputPrice,
     };
@@ -111,13 +109,16 @@ function FormTable() {
     setInputName("");
     setProductCategory("");
     setProductFreshness("");
-    // Mengosongkan input tidak perlu untuk file input
     setAdditionalDescription("");
     setInputPrice("");
 
     window.alert(
       `Data yang telah terisi:\nProduct Name: ${newProduct.name}\nProduct Category: ${newProduct.category}\nProduct Freshness: ${newProduct.freshness}\nAdditional Description: ${newProduct.description}\nProduct Price: ${newProduct.price}`
     );
+  };
+
+  const handleRandomNumberClick = () => {
+    generateRandomNumber();
   };
 
   const [language, setLanguage] = useState("en");
@@ -189,13 +190,7 @@ function FormTable() {
               <label htmlFor="formFile" className="form-label ">
                 Image of Product
               </label>
-              <input
-                className="form-control"
-                type="file"
-                id="formFile"
-                // onChange={handleImageChange}
-              />
-              {/* <span className="text-danger">{imageError}</span> */}
+              <input className="form-control" type="file" id="formFile" />
             </div>
           </section>
         </section>
@@ -264,19 +259,40 @@ function FormTable() {
           </section>
         </section>
         <section className="row justify-content-center my-5">
-          <section className="container-price col-lg-6">
-            <label htmlFor="price" className="form-label">
-              Product price
-            </label>
+          <div className="form-group">
+            <label htmlFor="price">Product Price</label>
             <input
-              className="form-control"
-              id="price"
               type="number"
+              name="price"
+              id="price"
+              onClick={() => setRandomNumberTernary(true)}
+              onInput={(e) =>
+                (e.target.value = e.target.value.replace(/[^0-9]/g, ""))
+              }
               value={inputPrice}
+              className={`w-full rounded border-2 px-4 py-2 outline-none ${
+                randomNumberTernary === true
+                  ? inputPrice === ""
+                    ? "border-red-500"
+                    : "focus:border-blue-500"
+                  : ""
+              }`}
               onChange={handlePriceChange}
             />
-            <span className="text-danger">{priceError}</span>
-          </section>
+            <span
+              className="text-red-500"
+              style={{
+                display:
+                  randomNumberTernary === true
+                    ? inputPrice === ""
+                      ? "block"
+                      : "none"
+                    : "none",
+              }}
+            >
+              Please enter a valid Price
+            </span>
+          </div>
         </section>
         <section className="row justify-content-center my-5">
           <section className="container-submit col-lg-6">
@@ -286,30 +302,10 @@ function FormTable() {
           </section>
         </section>
       </form>
-      <br />
-      <br />
-      <br />
-      <section>
-        <h3 className="container">List Product</h3>
-        <table className="table container tabel" id="outputTable">
-          {/* Tambahkan konten tabel di sini */}
-        </table>
-      </section>
-      <section>
-        <section className="row justify-content-center my-5">
-          <section className="container-submit col-lg-6">
-            <form>
-              <label htmlFor="gsearch">Search :</label>
-              <input
-                type="text"
-                id="searchInput"
-                className="form-control"
-                placeholder="Search..."
-              />
-              <input type="submit" />
-            </form>
-          </section>
-        </section>
+      <section className="row justify-content-center my-5">
+        <button className="btn btn-primary" onClick={handleRandomNumberClick}>
+          Random Number
+        </button>
       </section>
     </div>
   );
