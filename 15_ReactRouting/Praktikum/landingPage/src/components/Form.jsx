@@ -11,7 +11,7 @@ const Form = () => {
     category: "",
     freshness: "Brand New",
     price: "",
-    image: "",
+    image: null,
     description: "",
   });
 
@@ -19,12 +19,20 @@ const Form = () => {
   const [editing, setEdit] = useState(false);
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    // Jika input adalah file gambar, simpan file di dalam "image"
+    if (type === "file") {
+      setFormData({
+        ...formData,
+        [name]: e.target.files[0], // Menggunakan file pertama jika ada
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   const generateRandomId = () => {
@@ -34,19 +42,49 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formData.name.length > 25) {
+    // Validasi Nama Produk (hanya huruf dan spasi, maksimal 25 karakter)
+    const productNameRegex = /^[A-Za-z\s]{1,25}$/;
+    if (!productNameRegex.test(formData.name)) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Product name must not exceed 25 characters.",
+        text: "Product name is not valid. It should only contain letters and spaces, up to 25 characters.",
         confirmButtonText: "OK",
       });
       return;
-    } else if (formData.name.trim() === "") {
+    }
+
+    // Validasi Kategori Produk (pilih dari daftar kategori yang sah)
+    const validCategories = ["One", "Two", "Three", "Four"];
+    if (!validCategories.includes(formData.category)) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Please enter a valid product name.",
+        text: "Please select a valid product category.",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    // Validasi Kesegaran Produk (hanya pilih dari daftar opsi yang sah)
+    const validFreshnessOptions = ["Brand New", "Second Hand", "Refurbished"];
+    if (!validFreshnessOptions.includes(formData.freshness)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please select a valid product freshness option.",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    // Validasi Harga Produk (hanya angka positif)
+    const productPriceRegex = /^[1-9]\d*$/;
+    if (!productPriceRegex.test(formData.price)) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Product price is not valid. Please enter a positive number.",
         confirmButtonText: "OK",
       });
       return;
@@ -71,8 +109,8 @@ const Form = () => {
       name: "",
       category: "",
       freshness: "Brand New",
-      price: 0,
-      image: "",
+      price: "",
+      image: null,
       description: "",
     });
   };
@@ -127,10 +165,10 @@ const Form = () => {
             value={formData.category}
             onChange={handleInputChange}
           >
+            <option>Choose</option>
             <option>One</option>
             <option>Two</option>
             <option>Three</option>
-            <option>Four</option>
           </select>
         </div>
 
@@ -148,7 +186,7 @@ const Form = () => {
             id="image"
             type="file"
             name="image"
-            value={formData.image}
+            accept="image/*" // Hanya menerima file gambar
             onChange={handleInputChange}
           />
         </div>
@@ -202,22 +240,25 @@ const Form = () => {
         <table className="min-w-full text-center text-sm font-light">
           <thead className="border-b bg-neutral-800 font-medium text-white dark:border-neutral-500 dark:bg-neutral-900">
             <tr>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
                 No
               </th>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
                 Product Name
               </th>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
                 Product Category
               </th>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
+                Image
+              </th>
+              <th scope="col" className="px-6 py-4">
                 Product Freshness
               </th>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
                 Product Price
               </th>
-              <th scope="col" className=" px-6 py-4">
+              <th scope="col" className="px-6 py-4">
                 Action
               </th>
             </tr>
@@ -228,6 +269,15 @@ const Form = () => {
                 <td>{data.id}</td>
                 <td>{data.name}</td>
                 <td>{data.category}</td>
+                <td>
+                  {data.image && (
+                    <img
+                      src={URL.createObjectURL(data.image)}
+                      alt={`Product Image for ${data.name}`}
+                      width="100"
+                    />
+                  )}
+                </td>
                 <td>{data.freshness}</td>
                 <td>{data.price}</td>
                 <td>
@@ -245,7 +295,11 @@ const Form = () => {
                   </button>
                   <button
                     className="bg-blue-600 w-30 mr-5 p-3 m-5 rounded-xl text-white"
-                    onClick={() => navigate(`/Product/${data.id}`)}
+                    onClick={() => {
+                      navigate(`/product/${data.id}`, {
+                        state: { selectedProduct: data },
+                      });
+                    }}
                   >
                     Detail
                   </button>

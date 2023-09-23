@@ -1,24 +1,24 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-const ProductDetail = ({ tableData }) => {
-  const { id } = useParams();
-  const product = tableData.find((data) => data.id === parseInt(id));
-
+const ProductDetail = ({ product }) => {
+  const location = useLocation();
+  const selectedProduct = location.state.selectedProduct;
   return (
     <div>
       <h2>Product Detail</h2>
-      {product ? (
-        <div>
-          <p>Product ID: {product.id}</p>
-          <p>Product Name: {product.name}</p>
-          <p>Product Category: {product.category}</p>
-          <p>Product Freshness: {product.freshness}</p>
-          <p>Product Price: {product.price}</p>
-          <p>Product Description: {product.description}</p>
-        </div>
-      ) : (
-        <p>Product not found</p>
+      <p>ID: {selectedProduct.id}</p>
+      <p>Name: {selectedProduct.name}</p>
+      <p>Category: {selectedProduct.category}</p>
+      <p>Freshness: {selectedProduct.freshness}</p>
+      <p>Price: ${selectedProduct.price}</p>
+      <p>Description: {selectedProduct.description}</p>
+      {selectedProduct.image && (
+        <img
+          src={URL.createObjectURL(selectedProduct.image)}
+          alt={`product Image for ${selectedProduct.name}`}
+          width="100"
+        />
       )}
     </div>
   );
