@@ -1,0 +1,5 @@
+1. **Optimisasi Build**: Deployment dalam React.js melibatkan optimisasi aplikasi untuk produksi. Ini termasuk menggunakan alat pengembangan seperti Webpack untuk menggabungkan file JavaScript , mengurangi ukuran CSS dan JavaScript, serta menghilangkan kode yang tidak digunakan. Mengoptimalkan proses build mengurangi waktu pemuatan dan memastikan pengalaman pengguna yang lebih lancar.
+
+2. **Hosting dan Konfigurasi Server**: Memilih platform hosting yang tepat dan mengkonfigurasi server adalah hal penting dalam deployment React.js. Pilihan populer termasuk platform seperti Netlify, Vercel, atau mendeploy pada layanan cloud seperti AWS, Azure, atau Heroku. Konfigurasi server yang tepat, pengaturan routing, dan manajemen variabel lingkungan adalah langkah penting dalam proses deployment.
+
+3.Vercel adalah sebuah platform cloud yang dirancang khusus untuk deployment dan hosting aplikasi web dan situs web. menyediakan berbagai fitur yang memudahkan proses deployment dan hosting aplikasi React, Next.js, dan berbagai teknologi web modern lainnya
