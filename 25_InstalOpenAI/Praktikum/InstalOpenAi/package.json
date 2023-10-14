@@ -1,5 +1,5 @@
 {
-  "name": "landingpage",
+  "name": "instalopenai",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -12,18 +12,9 @@
     "minify": "npx tailwindcss -i ./src/styles/tailwindInput.css -o ./src/styles/tailwind.css --minify"
   },
   "dependencies": {
-    "@reduxjs/toolkit": "^1.9.6",
-    "axios": "^1.5.1",
-    "formik": "^2.4.5",
     "openai": "^4.12.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.1.2",
-    "react-router-dom": "^6.16.0",
-    "redux": "^4.2.1",
-    "sweetalert2": "^11.7.28",
-    "uuid": "^9.0.1",
-    "yup": "^1.2.0"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
